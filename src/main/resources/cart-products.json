@@ -1,0 +1,14 @@
+[
+  {
+    "imagePath": "images/item-cart-04.jpg",
+    "name": "Fresh Strawberries",
+    "price": 36000,
+    "quantity": 2
+  },
+  {
+    "imagePath": "images/item-cart-05.jpg",
+    "name": "Lightweight Jacket",
+    "price": 16000,
+    "quantity": 1
+  }
+]

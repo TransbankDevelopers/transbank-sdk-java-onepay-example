@@ -18,7 +18,7 @@ en tu computador:
 Primero deberas clonar este repositorio en tu computador:
 
 ````batch
-git clone https://github.com/TransbankDevelopers/transbank-sdk-java-example.git
+git clone https://github.com/TransbankDevelopers/transbank-sdk-java-onepay-example.git
 ````
 
 ## Empaquetar

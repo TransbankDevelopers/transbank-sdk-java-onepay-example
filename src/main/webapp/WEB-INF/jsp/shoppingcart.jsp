@@ -533,23 +533,25 @@
 </script>
 <!--===============================================================================================-->
 <script src="js/main.js"></script>
-<script src="js/lib/onepay/vendor/signv4utils.js"></script>
-<script src="js/lib/onepay/vendor/bundle.js"></script>
-<script src="js/lib/onepay/vendor/moment.js"></script>
-<script src="js/lib/onepay/vendor/mqttclient.js"></script>
-
-<script src="js/lib/onepay/httputil.js"></script>
-<script src="js/lib/onepay/onepayutil.js"></script>
-<script src="js/lib/onepay/onepay-websocket.js"></script>
 <div>
     <input type="hidden" id="ewallet-pay-data" data='{"items":[{"amount":"36000","quantity":"1","description":"Fresh Strawberries"},{"amount":"16000","quantity":"1","description":"Lightweight Jacket"}]}' />
 </div>
 <script type="text/javascript">
-    (function(o,n,e,p,a,y) {var s = n.createElement(p);s.type = "text/javascript";s.
-        src = e;s.onload = s.onreadystatechange = function() {if (!o && (!s.readyState
-            || s.readyState === "loaded")) {y();}};var t = n.getElementsByTagName("script")[0];
-        p = t.parentNode;p.insertBefore(s, t);})(false, document, "./js/lib/onepay/onepay-sdk.js", "script",
-        window, function() {
+    (function (o, n, e, p, a, y) {
+        var s = n.createElement(p);
+        s.type = "text/javascript";
+        s.src = e;
+        s.onload = s.onreadystatechange = function () {
+            if (!o && (!s.readyState
+                || s.readyState === "loaded")) {
+                y();
+            }
+        };
+        var t = n.getElementsByTagName("script")[0];
+        p = t.parentNode;
+        p.insertBefore(s, t);
+    })(false, document, "https://cdn.rawgit.com/TransbankDevelopers/transbank-sdk-js-onepay/a75e7827/dist/onepay-lib.min.js", "script",
+        window, function () {
             console.log("onepay js lib sucess loaded");
         });
 
@@ -573,7 +575,7 @@
                 let transaction = JSON.parse(data);
                 transaction["paymentStatusHandler"] = {
                     ottAssigned: function () {
-                        // callback transaccion asinada
+                        // callback transacción asinada
                         console.log("Transacción asignada.");
                         showLoadingImage();
                     },
@@ -592,13 +594,16 @@
                     },
                     canceled: function () {
                         // callback rejected by user
+                        console.log("transacción cancelada por el usuario");
                         onepay.drawQrImage("qr");
                     },
                     authorizationError: function () {
                         // cacllback authorization error
+                        console.log("error de autorizacion");
                     },
                     unknown: function () {
                         // callback to any unknown status recived
+                        console.log("estado desconocido");
                     }
                 };
 

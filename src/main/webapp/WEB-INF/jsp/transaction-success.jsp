@@ -11,7 +11,7 @@
     <meta charset="utf-8">
 </head>
 <body>
-<h3><?php echo $title; ?></h3>
+<h3>Tu pago se completo en forma exitosa</h3>
 <table>
     <tr>
         <td>OCC:</td>

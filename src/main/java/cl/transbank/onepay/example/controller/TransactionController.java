@@ -4,7 +4,7 @@ import cl.transbank.onepay.Onepay;
 import cl.transbank.onepay.example.ComerceConfig;
 import cl.transbank.onepay.example.model.Product;
 import cl.transbank.onepay.example.resource.Cart;
-import cl.transbank.onepay.exception.TransbankException;
+import cl.transbank.onepay.exception.AmountException;
 import cl.transbank.onepay.model.*;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,7 +25,7 @@ public class TransactionController {
 
     @RequestMapping(value = "/transaction-create", method = RequestMethod.POST)
     @ResponseBody
-    public String transactionCreate() throws TransbankException, IOException {
+    public String transactionCreate() throws AmountException {
         Onepay.setIntegrationType(Onepay.IntegrationType.TEST);
         List<Product> products = cart.getProducts();
 
@@ -45,7 +44,12 @@ public class TransactionController {
                 .setSharedSecret(ComerceConfig.ONEPAY_SHARED_SECRET);
 
         // transaction create on Onepay
-        TransactionCreateResponse response = Transaction.create(shoppingCart, options);
+        TransactionCreateResponse response = null;
+        try {
+            response = Transaction.create(shoppingCart, options);
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
 
         return new Gson().toJson(response);
     }

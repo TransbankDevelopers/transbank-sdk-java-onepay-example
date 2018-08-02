@@ -64,19 +64,11 @@
         </dependency>
 
         <dependency>
-            <groupId>cl.transbank</groupId>
+            <groupId>com.github.transbankdevelopers</groupId>
             <artifactId>transbank-sdk-java</artifactId>
             <version>1.0.0</version>
         </dependency>
     </dependencies>
-
-    <repositories>
-        <repository>
-            <id>transbank-repo</id>
-            <name>transbank-repo</name>
-            <url>http://142.93.18.171/maven-repo/</url>
-        </repository>
-    </repositories>
 
     <build>
         <plugins>

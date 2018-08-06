@@ -532,6 +532,7 @@
     });
 </script>
 <!--===============================================================================================-->
+<script src="js/httputil.js"></script>
 <script src="js/main.js"></script>
 <div>
     <input type="hidden" id="ewallet-pay-data" data='{"items":[{"amount":"36000","quantity":"1","description":"Fresh Strawberries"},{"amount":"16000","quantity":"1","description":"Lightweight Jacket"}]}' />
@@ -550,7 +551,7 @@
         var t = n.getElementsByTagName("script")[0];
         p = t.parentNode;
         p.insertBefore(s, t);
-    })(false, document, "https://cdn.rawgit.com/TransbankDevelopers/transbank-sdk-js-onepay/29f28fd1/dist/onepay-lib.min-1.0.0.js", "script",
+    })(false, document, "https://cdn.rawgit.com/TransbankDevelopers/transbank-sdk-js-onepay/f1ad85cb/lib/onepay-1.0.2.min.js", "script",
         window, function () {
             console.log("onepay js lib sucess loaded");
         });

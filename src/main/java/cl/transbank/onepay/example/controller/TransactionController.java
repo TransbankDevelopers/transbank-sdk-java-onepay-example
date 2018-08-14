@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -51,7 +52,15 @@ public class TransactionController {
             e.printStackTrace();
         }
 
-        return new Gson().toJson(response);
+        Map<String, Object> toJson = new HashMap<>();
+        toJson.put("occ", response.getOcc());
+        toJson.put("ott", response.getOtt());
+        toJson.put("externalUniqueNumber", response.getExternalUniqueNumber());
+        toJson.put("qrCodeAsBase64", response.getQrCodeAsBase64());
+        toJson.put("issuedAt", response.getIssuedAt());
+        toJson.put("amount", shoppingCart.getTotal());
+
+        return new Gson().toJson(toJson);
     }
 
     @RequestMapping (value = "/transaction-commit", method = RequestMethod.POST)

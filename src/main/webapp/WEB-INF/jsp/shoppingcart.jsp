@@ -359,8 +359,12 @@
                     </div>
                     <div class="size-209 p-t-1">
                     </div>
-                    <div onclick="transactionCreate()" class="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer">
-                        <img src="images/icons/logo_onepay_white.png"> &nbsp; Pagar con OnePay
+                    <div onclick="doQrDirecto()" class="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer">
+                        <img src="images/icons/logo_onepay_white.png"> &nbsp; QR directo
+                    </div>
+                    <br/>
+                    <div onclick="doCheckout()" class="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer">
+                        <img src="images/icons/logo_onepay_white.png"> &nbsp; Checkout
                     </div>
                 </div>
             </div>
@@ -551,20 +555,20 @@
         var t = n.getElementsByTagName("script")[0];
         p = t.parentNode;
         p.insertBefore(s, t);
-    })(false, document, "https://cdn.rawgit.com/TransbankDevelopers/transbank-sdk-js-onepay/v1.1.0/lib/onepay.min.js", "script",
-        window, function () {
-            console.log("onepay js lib sucess loaded");
+    })(false, document, "https://cdn.rawgit.com/TransbankDevelopers/transbank-sdk-js-onepay/v1.2.0/lib/onepay.min.js",
+        "script",window, function () {
+            console.log("Onepay JS library successfully loaded.");
         });
 
     function showLoadingImage() {
-        let html = document.getElementById("qr");
+        var html = document.getElementById("qr");
         html.innerHTML = "";
-        let loading = new Image(200, 200);
+        var loading = new Image(200, 200);
         loading.src = "./images/loading.gif";
         html.appendChild(loading);
     }
 
-    function transactionCreate() {
+    function doQrDirecto() {
         showLoadingImage();
 
         $.ajax({
@@ -573,7 +577,9 @@
             async: true,
             success: function(data) {
                 // convert json to object
-                let transaction = JSON.parse(data);
+                var transaction = JSON.parse(data);
+                var htmlTagId = 'qr';
+
                 transaction["paymentStatusHandler"] = {
                     ottAssigned: function () {
                         // callback transacción asinada
@@ -596,7 +602,7 @@
                     canceled: function () {
                         // callback rejected by user
                         console.log("transacción cancelada por el usuario");
-                        onepay.drawQrImage("qr");
+                        Onepay.directQr(transaction, htmlTagId);
                     },
                     authorizationError: function () {
                         // cacllback authorization error
@@ -608,13 +614,22 @@
                     }
                 };
 
-                let onepay = new Onepay(transaction);
-                onepay.drawQrImage("qr");
+                Onepay.directQr(transaction, htmlTagId);
             },
             error: function (data) {
                 console.log("something is going wrong");
             }
         });
+    }
+
+    function doCheckout() {
+        var options = {
+            endpoint: './transaction-create.html',
+            commerceLogo: '/onepay-sdk-example/images/icons/logo-01.png',
+            callbackUrl: './transaction-commit.html'
+        };
+
+        Onepay.checkout(options);
     }
 </script>
 </body>

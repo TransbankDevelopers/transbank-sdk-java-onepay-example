@@ -35,7 +35,7 @@ function HttpUtil() {
     this.sendGetRedirect = function (destination, params) {
         var urlParams = Object.keys(params).map(function(param) {
             return encodeURIComponent(param) + '=' + encodeURIComponent(params[param]);
-        }.join('&');
+        }.join('&'));
         location.href = destination + '?' + urlParams
     };
 }

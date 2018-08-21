@@ -541,7 +541,7 @@
 <div>
     <input type="hidden" id="ewallet-pay-data" data='{"items":[{"amount":"36000","quantity":"1","description":"Fresh Strawberries"},{"amount":"16000","quantity":"1","description":"Lightweight Jacket"}]}' />
 </div>
-<script type="text/javascript">
+<script>
     (function (o, n, e, p, a, y) {
         var s = n.createElement(p);
         s.type = "text/javascript";
@@ -555,7 +555,7 @@
         var t = n.getElementsByTagName("script")[0];
         p = t.parentNode;
         p.insertBefore(s, t);
-    })(false, document, "https://cdn.rawgit.com/TransbankDevelopers/transbank-sdk-js-onepay/v1.2.0/lib/onepay.min.js",
+    })(false, document, "https://cdn.rawgit.com/TransbankDevelopers/transbank-sdk-js-onepay/v1.3.0/lib/onepay.min.js",
         "script",window, function () {
             console.log("Onepay JS library successfully loaded.");
         });
@@ -571,54 +571,53 @@
     function doQrDirecto() {
         showLoadingImage();
 
-        $.ajax({
-            type: "POST",
-            url: "./transaction-create.html",
-            async: true,
-            success: function(data) {
-                // convert json to object
-                var transaction = JSON.parse(data);
-                var htmlTagId = 'qr';
+        $.post('./transaction-create.html', {channel: Onepay.getChannel()}, function (data) {
+            // convert json to object
+            var transaction = JSON.parse(data);
 
-                transaction["paymentStatusHandler"] = {
-                    ottAssigned: function () {
-                        // callback transacción asinada
-                        console.log("Transacción asignada.");
-                        showLoadingImage();
-                    },
-                    authorized: function (occ, externalUniqueNumber) {
-                        // callback transacción autorizada
-                        console.log("occ : " + occ);
-                        console.log("externalUniqueNumber : " + externalUniqueNumber);
-
-                        let params = {
-                            occ: occ,
-                            externalUniqueNumber: externalUniqueNumber
-                        };
-
-                        let httpUtil = new HttpUtil();
-                        httpUtil.sendPostRedirect("./transaction-commit.html", params);
-                    },
-                    canceled: function () {
-                        // callback rejected by user
-                        console.log("transacción cancelada por el usuario");
-                        Onepay.directQr(transaction, htmlTagId);
-                    },
-                    authorizationError: function () {
-                        // cacllback authorization error
-                        console.log("error de autorizacion");
-                    },
-                    unknown: function () {
-                        // callback to any unknown status recived
-                        console.log("estado desconocido");
-                    }
-                };
-
-                Onepay.directQr(transaction, htmlTagId);
-            },
-            error: function (data) {
-                console.log("something is going wrong");
+            // si el cliente esta desde un movil redirecciono a la app y dejo de ejecutar las funciones de web.
+            if (Onepay.isMobile()) {
+                Onepay.redirectToApp(transaction.occ);
+                return;
             }
+
+            var htmlTagId = 'qr';
+
+            transaction["paymentStatusHandler"] = {
+                ottAssigned: function () {
+                    // callback transacción asinada
+                    console.log("Transacción asignada.");
+                    showLoadingImage();
+                },
+                authorized: function (occ, externalUniqueNumber) {
+                    // callback transacción autorizada
+                    console.log("occ : " + occ);
+                    console.log("externalUniqueNumber : " + externalUniqueNumber);
+
+                    let params = {
+                        occ: occ,
+                        externalUniqueNumber: externalUniqueNumber
+                    };
+
+                    let httpUtil = new HttpUtil();
+                    httpUtil.sendGetRedirect("./transaction-commit.html", params);
+                },
+                canceled: function () {
+                    // callback rejected by user
+                    console.log("transacción cancelada por el usuario");
+                    Onepay.directQr(transaction, htmlTagId);
+                },
+                authorizationError: function () {
+                    // cacllback authorization error
+                    console.log("error de autorizacion");
+                },
+                unknown: function () {
+                    // callback to any unknown status recived
+                    console.log("estado desconocido");
+                }
+            };
+
+            Onepay.directQr(transaction, htmlTagId);
         });
     }
 
@@ -629,7 +628,7 @@
             callbackUrl: './transaction-commit.html'
         };
 
-        Onepay.checkout(options);
+        Onepay.checkout(options, [{name:'param1',value:'value1'},{name:'param2',value:'value2'}]);
     }
 </script>
 </body>

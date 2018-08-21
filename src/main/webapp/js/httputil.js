@@ -33,28 +33,9 @@ function HttpUtil() {
     };
 
     this.sendGetRedirect = function (destination, params) {
-        let form = document.createElement('form');
-
-        form.method = 'GET';
-        form.action = destination;
-
-        Object.keys(params).forEach(function (key) {
-            let param = document.createElement('input');
-
-            param.type = 'hidden';
-            param.name = key;
-            param.value = params[key];
-            form.appendChild(param);
-        });
-
-        let submit = document.createElement('input');
-
-        submit.type = 'submit';
-        submit.name = 'submitButton';
-        submit.style.display = 'none';
-
-        form.appendChild(submit);
-        document.body.appendChild(form);
-        form.submit();
+        var urlParams = Object.keys(params).map(function(param) {
+            return encodeURIComponent(param) + '=' + encodeURIComponent(params[param]);
+        }.join('&');
+        location.href = destination + '?' + urlParams
     };
 }

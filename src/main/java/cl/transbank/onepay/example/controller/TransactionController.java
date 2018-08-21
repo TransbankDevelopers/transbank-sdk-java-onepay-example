@@ -27,11 +27,6 @@ public class TransactionController {
     @RequestMapping(value = "/transaction-create", method = RequestMethod.POST)
     @ResponseBody
     public String transactionCreate(@RequestParam("channel") String channel) throws AmountException, UnknownHostException, SocketException {
-        String ip;
-        try(final DatagramSocket socket = new DatagramSocket()){
-            socket.connect(InetAddress.getByName("8.8.8.8"), 10002);
-            ip = socket.getLocalAddress().getHostAddress();
-        }
         String callbackUrl = String.format("http://%s:8081/onepay-sdk-example/transaction-commit.html", System.getenv("HOST_IP"));
         Onepay.setCallbackUrl(callbackUrl);
         Onepay.setIntegrationType(Onepay.IntegrationType.TEST);

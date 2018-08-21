@@ -359,8 +359,12 @@
                     </div>
                     <div class="size-209 p-t-1">
                     </div>
-                    <div onclick="transactionCreate()" class="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer">
-                        <img src="images/icons/logo_onepay_white.png"> &nbsp; Pagar con OnePay
+                    <div onclick="doQrDirecto()" class="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer">
+                        <img src="images/icons/logo_onepay_white.png"> &nbsp; QR directo
+                    </div>
+                    <br/>
+                    <div onclick="doCheckout()" class="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer">
+                        <img src="images/icons/logo_onepay_white.png"> &nbsp; Checkout
                     </div>
                 </div>
             </div>
@@ -537,7 +541,7 @@
 <div>
     <input type="hidden" id="ewallet-pay-data" data='{"items":[{"amount":"36000","quantity":"1","description":"Fresh Strawberries"},{"amount":"16000","quantity":"1","description":"Lightweight Jacket"}]}' />
 </div>
-<script type="text/javascript">
+<script>
     (function (o, n, e, p, a, y) {
         var s = n.createElement(p);
         s.type = "text/javascript";
@@ -551,70 +555,80 @@
         var t = n.getElementsByTagName("script")[0];
         p = t.parentNode;
         p.insertBefore(s, t);
-    })(false, document, "https://cdn.rawgit.com/TransbankDevelopers/transbank-sdk-js-onepay/v1.1.0/lib/onepay.min.js", "script",
-        window, function () {
-            console.log("onepay js lib sucess loaded");
+    })(false, document, "https://cdn.rawgit.com/TransbankDevelopers/transbank-sdk-js-onepay/v1.3.2/lib/onepay.min.js",
+        "script",window, function () {
+            console.log("Onepay JS library successfully loaded.");
         });
 
     function showLoadingImage() {
-        let html = document.getElementById("qr");
+        var html = document.getElementById("qr");
         html.innerHTML = "";
-        let loading = new Image(200, 200);
+        var loading = new Image(200, 200);
         loading.src = "./images/loading.gif";
         html.appendChild(loading);
     }
 
-    function transactionCreate() {
+    function doQrDirecto() {
         showLoadingImage();
 
-        $.ajax({
-            type: "POST",
-            url: "./transaction-create.html",
-            async: true,
-            success: function(data) {
-                // convert json to object
-                let transaction = JSON.parse(data);
-                transaction["paymentStatusHandler"] = {
-                    ottAssigned: function () {
-                        // callback transacción asinada
-                        console.log("Transacción asignada.");
-                        showLoadingImage();
-                    },
-                    authorized: function (occ, externalUniqueNumber) {
-                        // callback transacción autorizada
-                        console.log("occ : " + occ);
-                        console.log("externalUniqueNumber : " + externalUniqueNumber);
+        $.post('./transaction-create.html', {channel: Onepay.getChannel()}, function (data) {
+            // convert json to object
+            var transaction = JSON.parse(data);
 
-                        let params = {
-                            occ: occ,
-                            externalUniqueNumber: externalUniqueNumber
-                        };
-
-                        let httpUtil = new HttpUtil();
-                        httpUtil.sendPostRedirect("./transaction-commit.html", params);
-                    },
-                    canceled: function () {
-                        // callback rejected by user
-                        console.log("transacción cancelada por el usuario");
-                        onepay.drawQrImage("qr");
-                    },
-                    authorizationError: function () {
-                        // cacllback authorization error
-                        console.log("error de autorizacion");
-                    },
-                    unknown: function () {
-                        // callback to any unknown status recived
-                        console.log("estado desconocido");
-                    }
-                };
-
-                let onepay = new Onepay(transaction);
-                onepay.drawQrImage("qr");
-            },
-            error: function (data) {
-                console.log("something is going wrong");
+            // si el cliente esta desde un movil redirecciono a la app y dejo de ejecutar las funciones de web.
+            if (Onepay.isMobile()) {
+                Onepay.redirectToApp(transaction.occ);
+                return;
             }
+
+            var htmlTagId = 'qr';
+
+            transaction["paymentStatusHandler"] = {
+                ottAssigned: function () {
+                    // callback transacción asinada
+                    console.log("Transacción asignada.");
+                    showLoadingImage();
+                },
+                authorized: function (occ, externalUniqueNumber) {
+                    // callback transacción autorizada
+                    console.log("occ : " + occ);
+                    console.log("externalUniqueNumber : " + externalUniqueNumber);
+
+                    let params = {
+                        occ: occ,
+                        externalUniqueNumber: externalUniqueNumber
+                    };
+
+                    let httpUtil = new HttpUtil();
+                    httpUtil.sendGetRedirect("./transaction-commit.html", params);
+                },
+                canceled: function () {
+                    // callback rejected by user
+                    console.log("transacción cancelada por el usuario");
+                    Onepay.directQr(transaction, htmlTagId);
+                },
+                authorizationError: function () {
+                    // cacllback authorization error
+                    console.log("error de autorizacion");
+                },
+                unknown: function () {
+                    // callback to any unknown status recived
+                    console.log("estado desconocido");
+                }
+            };
+
+            Onepay.directQr(transaction, htmlTagId);
         });
+    }
+
+    function doCheckout() {
+        var options = {
+            endpoint: './transaction-create.html',
+            commerceLogo: '/onepay-sdk-example/images/icons/logo-01.png',
+            callbackUrl: './transaction-commit.html'
+        };
+
+        Onepay.checkout(options);
     }
 </script>
 </body>

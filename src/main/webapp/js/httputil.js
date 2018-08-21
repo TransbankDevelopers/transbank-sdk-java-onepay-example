@@ -31,4 +31,11 @@ function HttpUtil() {
         document.body.appendChild(form);
         form.submit();
     };
+
+    this.sendGetRedirect = function (destination, params) {
+        var urlParams = Object.keys(params).map(function(param) {
+            return encodeURIComponent(param) + '=' + encodeURIComponent(params[param]);
+        }.join('&'));
+        location.href = destination + '?' + urlParams
+    };
 }

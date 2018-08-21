@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.net.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,8 +26,11 @@ public class TransactionController {
 
     @RequestMapping(value = "/transaction-create", method = RequestMethod.POST)
     @ResponseBody
-    public String transactionCreate() throws AmountException {
+    public String transactionCreate(@RequestParam("channel") String channel) throws AmountException, UnknownHostException, SocketException {
+        String callbackUrl = String.format("http://%s:8081/onepay-sdk-example/transaction-commit.html", System.getenv("HOST_IP"));
+        Onepay.setCallbackUrl(callbackUrl);
         Onepay.setIntegrationType(Onepay.IntegrationType.TEST);
+
         List<Product> products = cart.getProducts();
 
         // create sdk shopping cart
@@ -46,15 +50,23 @@ public class TransactionController {
         // transaction create on Onepay
         TransactionCreateResponse response = null;
         try {
-            response = Transaction.create(shoppingCart, options);
+            response = Transaction.create(shoppingCart, Enum.valueOf(Onepay.Channel.class, channel), options);
         } catch (Throwable e) {
             e.printStackTrace();
         }
 
-        return new Gson().toJson(response);
+        Map<String, Object> toJson = new HashMap<>();
+        toJson.put("occ", response.getOcc());
+        toJson.put("ott", response.getOtt());
+        toJson.put("externalUniqueNumber", response.getExternalUniqueNumber());
+        toJson.put("qrCodeAsBase64", response.getQrCodeAsBase64());
+        toJson.put("issuedAt", response.getIssuedAt());
+        toJson.put("amount", shoppingCart.getTotal());
+
+        return new Gson().toJson(toJson);
     }
 
-    @RequestMapping (value = "/transaction-commit", method = RequestMethod.POST)
+    @RequestMapping (value = "/transaction-commit", method = RequestMethod.GET)
     public ModelAndView transactionCommit(@RequestParam("occ") String occ,
                                           @RequestParam("externalUniqueNumber") String externalUniqueNumber) {
         Onepay.setIntegrationType(Onepay.IntegrationType.TEST);

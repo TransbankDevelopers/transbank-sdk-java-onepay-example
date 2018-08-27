@@ -1,4 +1,4 @@
-# Proyecto de ejemplo para Transbank SDK Java
+# Proyecto de ejemplo Onepay para Transbank SDK Java
 
 ## Requerimientos
 

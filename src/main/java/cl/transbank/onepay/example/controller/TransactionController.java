@@ -20,14 +20,24 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 @Controller
 public class TransactionController {
     @Autowired private Cart cart;
 
     @RequestMapping(value = "/transaction-create", method = RequestMethod.POST)
     @ResponseBody
-    public String transactionCreate(@RequestParam("channel") String channel) throws AmountException, UnknownHostException, SocketException {
-        String callbackUrl = String.format("http://%s:8081/onepay-sdk-example/transaction-commit.html", System.getenv("HOST_IP"));
+    public String transactionCreate(@RequestParam("channel") String channel, HttpServletRequest request) throws AmountException {
+
+        String scheme = request.getScheme();
+        String serverName = request.getServerName();
+        int serverPort = request.getServerPort();
+        String path = request.getContextPath();
+        if (!path.endsWith("/")) path += "/";
+        String callbackUrl = String.format(
+                "%s://%s:%s%stransaction-commit.html",
+                scheme, serverName, serverPort, path);
         Onepay.setCallbackUrl(callbackUrl);
         Onepay.setIntegrationType(Onepay.IntegrationType.TEST);
 

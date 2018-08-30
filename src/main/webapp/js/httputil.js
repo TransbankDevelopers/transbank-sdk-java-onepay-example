@@ -33,9 +33,10 @@ function HttpUtil() {
     };
 
     this.sendGetRedirect = function (destination, params) {
-        var urlParams = Object.keys(params).map(function(param) {
+        let keys = Object.keys(params);
+        let urlParams = keys.map(function (param) {
             return encodeURIComponent(param) + '=' + encodeURIComponent(params[param]);
-        }.join('&'));
-        location.href = destination + '?' + urlParams
+        }).join('&');
+        window.location = destination + '?' + urlParams;
     };
 }

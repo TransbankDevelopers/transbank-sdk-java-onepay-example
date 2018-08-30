@@ -624,7 +624,7 @@
     function doCheckout() {
         var options = {
             endpoint: './transaction-create.html',
-            commerceLogo: '/onepay-sdk-example/images/icons/logo-01.png',
+            commerceLogo: 'images/icons/logo-01.png',
             callbackUrl: './transaction-commit.html'
         };
 

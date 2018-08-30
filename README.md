@@ -21,12 +21,17 @@ Primero deberas clonar este repositorio en tu computador:
 git clone https://github.com/TransbankDevelopers/transbank-sdk-java-onepay-example.git
 ````
 
-## Configurar tu IP
+## Ejecutar ejemplo
 
-Para que el caso de uso de Checkout en modalidad `Mobile` funcione correctamente es necesario que 
-configures la IP desde la cual tu dispositivo móvil tendrá acceso a ver el ejemplo.
+```bash
+$ mvn jetty:run
+```
 
-Para esto es importante que tu computador y tu dispositivo móvil estén conectados en la misma red.
+Luego visita http://localhost:8080 y verás la tienda de ejemplo. Desde tu computador podrás ver como se comporta Onepay en modalidad "WEB" desktop.
+
+## Probar en modalidad "MOBILE" web.
+
+Puedes también probar la tienda desde el navegador de tu teléfono. Para eso deberás saber la IP de tu computador para poder acceder desde el móvil.
 
 ### Obtener la IP de red de tu computador
 
@@ -106,39 +111,4 @@ utun1: flags=8051<UP,POINTOPOINT,RUNNING,MULTICAST> mtu 1380
 
 Mi ip entonces es `172.16.0.17`
 
-### Cambiar IP en docker-compose
-
-Abre con tu editor de texto preferido el archivo `docker-compose.yml` y cambia la línea
-`- HOST_IP=CAMBIA_POR_TU_UP` reemplazando el texto `CAMBIA_POR_TU_UP` con las ip que haz obtenido
-en el paso anterior. En mi caso quedara así:
-
-`- HOST_IP=172.16.0.17`
-
-## Empaquetar
-
-Una vez que haz terminado de clonar el repositorio debes acceder a la carpeta 
-```transbank-sdk-java-example.``` y ejecutar el siguiente comando:
-
-````batch
-mvn clean package
-````
-
-Una vez que termine de empaquetar se creara una carpeta ```target``` en el mismo
-directorio dentro de la cual debemos encontrar un archivo con extensión ```.war```
-
-## Ejecutar ejemplo
-
-El ejemplo viene listo para correr en ```docker-compose``` por lo tanto para
-ejecutarlo deberas correr el siguiente comando en la carpeta raíz del proyecto
-ejemplo:
-
-````batch
-docker-compose up
-````
-
-Si todo ha salido bien deberías poder acceder al ejemplo en la url 
-`http://localhost:8081/onepay-sdk-example/`
-
->**TIP**: En este momento puedes validar si la IP que haz configurado en tu `docker-file.yml` es
-correcta. Para esto deberías poder acceder al ejemplo usando tu IP en vez de `localhost` en la url.
-Ejemplo: `http://172.16.0.17:8081/onepay-sdk-example/`
+Una vez que sepas tu ip, visita desde tu teléfono (que debiera estar en la misma red) http://mi.direccion.ip:8080

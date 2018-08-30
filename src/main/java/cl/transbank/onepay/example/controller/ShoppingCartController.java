@@ -10,7 +10,7 @@ import org.springframework.web.servlet.ModelAndView;
 public class ShoppingCartController {
     @Autowired private Cart cart;
 
-    @RequestMapping("/index")
+    @RequestMapping("/")
     public ModelAndView shoppingCart() {
         return new ModelAndView("shoppingcart", "products",
                 cart.getProducts());

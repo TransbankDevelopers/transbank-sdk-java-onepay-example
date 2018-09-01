@@ -555,7 +555,7 @@
         var t = n.getElementsByTagName("script")[0];
         p = t.parentNode;
         p.insertBefore(s, t);
-    })(false, document, "https://cdn.rawgit.com/TransbankDevelopers/transbank-sdk-js-onepay/v1.3.2/lib/onepay.min.js",
+    })(false, document, "https://cdn.rawgit.com/TransbankDevelopers/transbank-sdk-js-onepay/v1.4.1/lib/onepay.min.js",
         "script",window, function () {
             console.log("Onepay JS library successfully loaded.");
         });

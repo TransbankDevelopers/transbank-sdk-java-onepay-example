@@ -115,7 +115,7 @@ Una vez que sepas tu ip, visita desde tu teléfono (que debiera estar en la mism
 
 ## Compra de prueba
 1. Desde la tienda de ejemplo.
-2. Clic en el botón `Pagar con Onepay`
+2. Clic en el botón `Onepay QR DIRECTO` o `Onepay QR CHECKOUT`
 3. Esperar a que se genere un nuevo código QR.
 4. Utilizando un lector de QR puedes identificar el OTT (identificador simplificado y único de la transacción) que se utiliza en el simulador de pago.
 5. Pagar/Rechazar utilizando el simulador de pagos

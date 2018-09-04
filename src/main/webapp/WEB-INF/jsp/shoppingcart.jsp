@@ -624,7 +624,7 @@
     function doCheckout() {
         var options = {
             endpoint: './transaction-create.html',
-            commerceLogo: 'http://18.216.122.230/modal/images/icons/logo-01.png',
+            commerceLogo: 'https://cdn.rawgit.com/TransbankDevelopers/transbank-sdk-java-onepay-example/3752b133/src/main/webapp/images/icons/logo-01.png',
             callbackUrl: './transaction-commit.html'
         };
 

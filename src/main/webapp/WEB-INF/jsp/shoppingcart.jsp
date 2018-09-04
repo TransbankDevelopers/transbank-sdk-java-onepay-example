@@ -555,7 +555,7 @@
         var t = n.getElementsByTagName("script")[0];
         p = t.parentNode;
         p.insertBefore(s, t);
-    })(false, document, "https://cdn.rawgit.com/TransbankDevelopers/transbank-sdk-js-onepay/v1.4.1/lib/onepay.min.js",
+    })(false, document, "https://cdn.rawgit.com/TransbankDevelopers/transbank-sdk-js-onepay/v1.4.3/lib/merchant.onepay.js",
         "script",window, function () {
             console.log("Onepay JS library successfully loaded.");
         });
@@ -594,12 +594,12 @@
                     console.log("occ : " + occ);
                     console.log("externalUniqueNumber : " + externalUniqueNumber);
 
-                    let params = {
+                    var params = {
                         occ: occ,
                         externalUniqueNumber: externalUniqueNumber
                     };
 
-                    let httpUtil = new HttpUtil();
+                    var httpUtil = new HttpUtil();
                     httpUtil.sendGetRedirect("./transaction-commit.html", params);
                 },
                 canceled: function () {
@@ -624,7 +624,7 @@
     function doCheckout() {
         var options = {
             endpoint: './transaction-create.html',
-            commerceLogo: 'images/icons/logo-01.png',
+            commerceLogo: 'http://18.216.122.230/modal/images/icons/logo-01.png',
             callbackUrl: './transaction-commit.html'
         };
 

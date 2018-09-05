@@ -1,7 +1,6 @@
 package cl.transbank.onepay.example.controller;
 
 import cl.transbank.onepay.Onepay;
-import cl.transbank.onepay.example.ComerceConfig;
 import cl.transbank.onepay.example.model.Product;
 import cl.transbank.onepay.example.resource.Cart;
 import cl.transbank.onepay.exception.AmountException;
@@ -31,18 +30,7 @@ public class TransactionController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public String transactionCreate(@RequestParam("channel") String channel, HttpServletRequest request) throws AmountException {
-
-        String scheme = request.getScheme();
-        String serverName = request.getServerName();
-        int serverPort = request.getServerPort();
-        String path = request.getContextPath();
-        if (!path.endsWith("/")) path += "/";
-        String callbackUrl = String.format(
-                "%s://%s:%s%stransaction-commit.html",
-                scheme, serverName, serverPort, path);
-        Onepay.setCallbackUrl(callbackUrl);
-        Onepay.setIntegrationType(Onepay.IntegrationType.TEST);
-
+        setOnepayCallbackUrlFromRequest(request);
         List<Product> products = cart.getProducts();
 
         // create sdk shopping cart
@@ -50,19 +38,14 @@ public class TransactionController {
 
         // add items to the shopping cart
         for (Product product : products) {
-            Item item = new Item(product.getName(), product.getQuantity(), product.getPrice(),null,-1L);
+            Item item = new Item(product.getName(), product.getQuantity(), product.getPrice(), null, -1L);
             shoppingCart.add(item);
         }
-
-        // create options to send Onepay's keys
-        Options options = Options.getDefaults()
-                .setApiKey(ComerceConfig.ONEPAY_API_KEY)
-                .setSharedSecret(ComerceConfig.ONEPAY_SHARED_SECRET);
 
         // transaction create on Onepay
         TransactionCreateResponse response = null;
         try {
-            response = Transaction.create(shoppingCart, Enum.valueOf(Onepay.Channel.class, channel), options);
+            response = Transaction.create(shoppingCart, Enum.valueOf(Onepay.Channel.class, channel));
         } catch (Throwable e) {
             e.printStackTrace();
         }
@@ -74,8 +57,19 @@ public class TransactionController {
         toJson.put("qrCodeAsBase64", response.getQrCodeAsBase64());
         toJson.put("issuedAt", response.getIssuedAt());
         toJson.put("amount", shoppingCart.getTotal());
-
         return new Gson().toJson(toJson);
+    }
+
+    private void setOnepayCallbackUrlFromRequest(HttpServletRequest request) {
+        String scheme = request.getScheme();
+        String serverName = request.getServerName();
+        int serverPort = request.getServerPort();
+        String path = request.getContextPath();
+        if (!path.endsWith("/")) path += "/";
+        String callbackUrl = String.format(
+                "%s://%s:%s%stransaction-commit.html",
+                scheme, serverName, serverPort, path);
+        Onepay.setCallbackUrl(callbackUrl);
     }
 
     @RequestMapping (value = "/transaction-commit", method = RequestMethod.GET)
@@ -83,12 +77,8 @@ public class TransactionController {
                                           @RequestParam("externalUniqueNumber") String externalUniqueNumber) {
         Onepay.setIntegrationType(Onepay.IntegrationType.TEST);
 
-        // create options to send Onepay's keys
-        Options options = Options.getDefaults()
-                .setApiKey(ComerceConfig.ONEPAY_API_KEY)
-                .setSharedSecret(ComerceConfig.ONEPAY_SHARED_SECRET);
         try {
-            final TransactionCommitResponse response = Transaction.commit(occ, externalUniqueNumber, options);
+            final TransactionCommitResponse response = Transaction.commit(occ, externalUniqueNumber);
             Map<String, Object> model = new HashMap<String, Object>();
             model.put("transaction", response);
             model.put("externalUniqueNumber", externalUniqueNumber);

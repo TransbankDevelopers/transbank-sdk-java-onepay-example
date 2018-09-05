@@ -8,6 +8,7 @@ import cl.transbank.onepay.exception.AmountException;
 import cl.transbank.onepay.model.*;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -25,8 +26,9 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 public class TransactionController {
     @Autowired private Cart cart;
-
-    @RequestMapping(value = "/transaction-create", method = RequestMethod.POST)
+    @RequestMapping(
+            value = "/transaction-create", method = RequestMethod.POST,
+            produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public String transactionCreate(@RequestParam("channel") String channel, HttpServletRequest request) throws AmountException {
 

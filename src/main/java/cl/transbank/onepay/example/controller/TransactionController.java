@@ -82,8 +82,6 @@ public class TransactionController {
             return new ModelAndView("transaction-error", model);
         }
 
-        Onepay.setIntegrationType(Onepay.IntegrationType.TEST);
-
         try {
             final TransactionCommitResponse response = Transaction.commit(occ, externalUniqueNumber);
 

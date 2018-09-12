@@ -7,13 +7,13 @@ function HttpUtil() {
     };
 
     this.sendPostRedirect = function (destination, params) {
-        let form = document.createElement('form');
+        var form = document.createElement('form');
 
         form.method = 'POST';
         form.action = destination;
 
         Object.keys(params).forEach(function (key) {
-            let param = document.createElement('input');
+            var param = document.createElement('input');
 
             param.type = 'hidden';
             param.name = key;
@@ -21,7 +21,7 @@ function HttpUtil() {
             form.appendChild(param);
         });
 
-        let submit = document.createElement('input');
+        var submit = document.createElement('input');
 
         submit.type = 'submit';
         submit.name = 'submitButton';
@@ -33,8 +33,8 @@ function HttpUtil() {
     };
 
     this.sendGetRedirect = function (destination, params) {
-        let keys = Object.keys(params);
-        let urlParams = keys.map(function (param) {
+        var keys = Object.keys(params);
+        var urlParams = keys.map(function (param) {
             return encodeURIComponent(param) + '=' + encodeURIComponent(params[param]);
         }).join('&');
         window.location = destination + '?' + urlParams;

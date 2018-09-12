@@ -1,46 +1,471 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<%@ page isELIgnored="false"%>
-<%@ page contentType="text/html; charset=UTF-8" %>
-<!DOCTYPE html>
-<html lang="en">
-<head>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head>
     <title>Carro de Compras</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <!--===============================================================================================-->
     <link rel="icon" type="image/png" href="images/icons/favicon.png" />
     <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css" />
     <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css" />
     <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="fonts/iconic/css/material-design-iconic-font.min.css">
+    <link rel="stylesheet" type="text/css" href="fonts/iconic/css/material-design-iconic-font.min.css" />
     <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="fonts/linearicons-v1.0.0/icon-font.min.css">
+    <link rel="stylesheet" type="text/css" href="fonts/linearicons-v1.0.0/icon-font.min.css" />
     <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="vendor/animate/animate.css">
+    <link rel="stylesheet" type="text/css" href="vendor/animate/animate.css" />
     <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="vendor/css-hamburgers/hamburgers.min.css">
+    <link rel="stylesheet" type="text/css" href="vendor/css-hamburgers/hamburgers.min.css" />
     <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="vendor/animsition/css/animsition.min.css">
+    <link rel="stylesheet" type="text/css" href="vendor/animsition/css/animsition.min.css" />
     <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="vendor/select2/select2.min.css">
+    <link rel="stylesheet" type="text/css" href="vendor/select2/select2.min.css" />
     <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="vendor/perfect-scrollbar/perfect-scrollbar.css">
+    <link rel="stylesheet" type="text/css" href="vendor/perfect-scrollbar/perfect-scrollbar.css" />
     <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="css/util.css">
-    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <link rel="stylesheet" type="text/css" href="css/util.css" />
+    <link rel="stylesheet" type="text/css" href="css/main.css" />
     <!--===============================================================================================-->
     <style type="text/css">
-        #qr > img {
+        #qr &gt; img {
             display: block;
             margin-left: auto;
             margin-right: auto;
         }
     </style>
-</head>
-<body class="animsition">
+<style type="text/css">.onepay-overlay {
+    position: absolute;
+    z-index: 9998;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    -webkit-transition: 1ms opacity ease;
+    -moz-transition: 1ms opacity ease;
+    -ms-transition: 1ms opacity ease;
+    -o-transition: 1ms opacity ease;
+    transition: 1ms opacity ease;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    background: rgba(0, 0, 0, 0.6)
+}
+.onepay-overlay.onepay-open {
+    opacity: 1
+}
+.onepay-overlay.fade-and-drop {
+    display: block;
+    opacity: 0;
+    -webkit-transition: 500ms opacity ease;
+    -moz-transition: 500ms opacity ease;
+    -ms-transition: 500ms opacity ease;
+    -o-transition: 500ms opacity ease;
+    transition: 500ms opacity ease
+}
+.onepay-overlay.fade-and-drop.onepay-open {
+    top: 0;
+    opacity: 1;
+    -webkit-transition: 500ms opacity ease;
+    -moz-transition: 500ms opacity ease;
+    -ms-transition: 500ms opacity ease;
+    -o-transition: 500ms opacity ease;
+    transition: 500ms opacity ease
+}
+.onepay-modal {
+    position: absolute;
+    z-index: 9999;
+    top: 50%;
+    left: 50%;
+    width: 94%;
+    opacity: 0;
+    -webkit-transition: 1ms opacity ease;
+    -moz-transition: 1ms opacity ease;
+    -ms-transition: 1ms opacity ease;
+    -o-transition: 1ms opacity ease;
+    transition: 1ms opacity ease;
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    overflow: hidden;
+    background: #fff;
+    text-align: center
+}
+.onepay-modal.onepay-open {
+    opacity: 1
+}
+.onepay-modal.onepay-open.onepay-anchored {
+    top: 20px;
+    -webkit-transform: translate(-50%, 0);
+    -moz-transform: translate(-50%, 0);
+    -ms-transform: translate(-50%, 0);
+    -o-transform: translate(-50%, 0);
+    transform: translate(-50%, 0)
+}
+.onepay-modal.fade-and-drop {
+    top: -300%;
+    opacity: 1;
+    display: block;
+    -webkit-transition: 500ms top 500ms ease;
+    -moz-transition: 500ms top 500ms ease;
+    -ms-transition: 500ms top 500ms ease;
+    -o-transition: 500ms top 500ms ease;
+    transition: 500ms top 500ms ease
+}
+.onepay-modal.fade-and-drop.onepay-open {
+    top: 50%;
+    -webkit-transition: 500ms top 500ms ease;
+    -moz-transition: 500ms top 500ms ease;
+    -ms-transition: 500ms top 500ms ease;
+    -o-transition: 500ms top 500ms ease;
+    transition: 500ms top 500ms ease
+}
+.onepay-modal.fade-and-drop.onepay-open.onepay-anchored {
+    -webkit-transition: 500ms top 500ms ease;
+    -moz-transition: 500ms top 500ms ease;
+    -ms-transition: 500ms top 500ms ease;
+    -o-transition: 500ms top 500ms ease;
+    transition: 500ms top 500ms ease
+}
+.onepay-content {
+    background-color: #f7f7f7;
+    width: 750px;
+    height: 520px;
+    -ms-text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%;
+    display: block;
+    border: 0;
+    margin: 0
+}
+.onepay-content .onepay-content-header {
+    background-color: white;
+    height: 80px;
+    max-height: 80px;
+    display: flex;
+    justify-content: center
+}
+.onepay-content .onepay-content-header .onepay-content-header-left-section {
+    display: flex;
+    width: 550px;
+    height: 80px;
+    opacity: 1
+}
+.onepay-content .onepay-content-header .onepay-content-header-left-section .onepay-content-header-left-section-commerce-logo {
+    display: flex;
+    width: 145px;
+    height: 80px;
+    padding: 10px;
+}
+.onepay-content .onepay-content-header .onepay-content-header-left-section .onepay-content-header-left-section-commerce-logo img {
+    margin: auto;
+    width: 100%;
+}
+.onepay-content .onepay-content-header .onepay-content-header-left-section .onepay-content-header-left-section-amount {
+    display: flex;
+    margin: 0;
+    text-align: left;
+    align-items: center;
+}
+.onepay-content .onepay-content-header .onepay-content-header-left-section .onepay-content-header-left-section-amount .onepay-amount {
+    font-size: 3rem
+}
+.onepay-content .onepay-content-header .onepay-content-header-left-section .onepay-content-header-left-section-amount .onepay-currency {
+    font-size: 1.5em;
+    font-weight: 700
+}
+.onepay-content .onepay-content-header .onepay-content-header-left-section .onepay-error-icon {
+    display: flex;
+    width: 20px;
+    margin: auto 10px auto 35px
+}
+.onepay-content .onepay-content-header .onepay-content-header-left-section .onepay-error-title {
+    font-size: 1.6em;
+    font-weight: 700;
+    display: inline-block;
+    text-align: left;
+    margin: auto auto auto 0
+}
+.onepay-content .onepay-content-header .onepay-content-header-right-section {
+    background-color: #fcb131;
+    display: flex;
+    width: 200px;
+    height: 80px;
+    text-align: right
+}
+.onepay-content .onepay-content-header .onepay-content-header-right-section img {
+    width: 100px;
+    margin: auto
+}
+.onepay-content .onepay-content-body {
+    display: flex;
+    justify-content: center;
+}
+.onepay-content .onepay-content-body .onepay-content-body-left-section {
+    width: 60%;
+    height: 100%;
+    margin-top: 25px;
+    display: inline-block;
+}
+.onepay-content .onepay-content-body .onepay-content-body-left-section .onepay-content-body-left-section-header {
+    display: block;
+    height: 60px;
+    text-align: center;
+}
+.onepay-content .onepay-content-body .onepay-content-body-left-section .onepay-content-body-left-section-header .onepay-content-body-left-section-header-content {
+    font-size: 1rem;
+}
+.onepay-content .onepay-content-body .onepay-content-body-left-section .onepay-content-body-left-section-body {
+    display: block;
+    height: 300px;
+    padding: 10px;
+    text-align: center;
+}
+.onepay-content .onepay-content-body .onepay-content-body-left-section .onepay-content-body-left-section-body img {
+    margin: auto;
+    height: 100%;
+    margin-left: -10%;
+}
+.onepay-content .onepay-content-body .onepay-content-body-left-section .onepay-content-body-left-section-footer {
+    height: 55px;
+    display: block;
+    text-align: center;
+}
+.onepay-content .onepay-content-body .onepay-content-body-left-section .onepay-content-body-left-section-footer .onepay-content-body-left-section-footer-content {
+    font-size: 0.9rem;
+    color: gray;
+}
+.onepay-content .onepay-content-body .onepay-content-body-right-section {
+    width: 40%;
+    height: 100%;
+    padding: 20px;
+}
+.onepay-content .onepay-content-body .onepay-content-body-right-section .onepay-content-body-right-section-body {
+    display: block;
+    height: 290px;
+    text-align: center;
+}
+.onepay-content .onepay-content-body .onepay-content-body-right-section .onepay-content-body-right-section-body .onepay-content-body-right-section-body-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 290px;
+    width: 100%;
+    background-color: white;
+    line-height: 1.5em;
+}
+.onepay-content .onepay-content-body .onepay-content-body-right-section .onepay-content-body-right-section-body .onepay-content-body-right-section-body-content img {
+    height: 170px;
+    width: 170px;
+    margin: 0 auto;
+}
+.onepay-content .onepay-content-body .onepay-content-body-right-section .onepay-content-body-right-section-body .onepay-content-body-right-section-body-content-loading {
+    display: inline-block;
+    text-align: center;
+    height: 290px;
+    width: 270px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.5em
+}
+.onepay-content .onepay-content-body .onepay-content-body-right-section .onepay-content-body-right-section-body .onepay-content-body-right-section-body-content-loading img.onepay-loading-image {
+    display: inline-block;
+    margin: auto;
+    margin-top: 25%;
+    height: 50%
+}
+.onepay-content .onepay-content-body .onepay-content-body-right-section .onepay-content-body-right-section-footer {
+    margin-top: 15px;
+    display: block;
+    text-align: center;
+    font-size: 0.8rem;
+}
+.onepay-content .onepay-content-body .onepay-content-body-right-section .onepay-content-body-right-section-footer .onepay-content-body-right-section-footer-body {
+    margin-top: 10px
+}
+.onepay-content .onepay-content-body .onepay-content-body-right-section .onepay-content-body-right-section-footer .onepay-content-body-right-section-footer-body a {
+    text-decoration: none
+}
+.onepay-content .onepay-content-body .onepay-content-body-right-section .onepay-content-body-right-section-footer .onepay-content-body-right-section-footer-body a img {
+    padding: 2px;
+    height: 40px
+}
+.onepay-content .onepay-content-body .onepay-content-bill-body-left-section {
+    text-align: left;
+    margin-top: 55px;
+    margin-left: 95px;
+    display: inline-block;
+    width: 255px;
+    height: 385px
+}
+.onepay-content .onepay-content-body .onepay-content-bill-body-left-section .onepay-content-bill-body-left-section-header {
+    display: block
+}
+.onepay-content .onepay-content-body .onepay-content-bill-body-left-section .onepay-content-bill-body-left-section-header .onepay-content-bill-body-left-section-header-title {
+    color: #3f1b7b;
+    font-weight: 300;
+    font-size: 2.1em;
+    display: block;
+    width: 250px;
+    height: 50px
+}
+.onepay-content .onepay-content-body .onepay-content-bill-body-left-section .onepay-content-bill-body-left-section-header .onepay-content-bill-body-left-section-header-body {
+    font-size: 1.1em;
+    display: block;
+    width: 250px;
+    height: 50
+}
+.onepay-content .onepay-content-body .onepay-content-bill-body-left-section .onepay-content-bill-body-left-section-body {
+    display: flex;
+    margin-top: 25px;
+    height: 260px
+}
+.onepay-content .onepay-content-body .onepay-content-bill-body-left-section .onepay-content-bill-body-left-section-body img {
+    height: 120px
+}
+.onepay-content .onepay-content-body .onepay-content-bill-body-left-section .onepay-content-bill-body-left-section-footer {
+    height: 55px;
+    display: flex
+}
+.onepay-content .onepay-content-body .onepay-content-bill-body-left-section .onepay-content-bill-body-left-section-footer .onepay-content-bill-body-left-section-footer-content {
+    margin: auto
+}
+.onepay-content .onepay-content-body .onepay-content-bill-body-right-section {
+    margin-top: 25px;
+    display: inline-block;
+    width: 400px;
+    height: 415px
+}
+.onepay-content .onepay-content-body .onepay-content-bill-body-right-section .onepay-content-bill-body-right-section-body {
+    display: block;
+    height: 290px;
+    width: 400px;
+    text-align: center
+}
+.onepay-content .onepay-content-body .onepay-content-bill-body-right-section .onepay-content-bill-body-right-section-body .onepay-content-bill-body-right-section-body-content-loading {
+    display: inline-block;
+    text-align: center;
+    margin-top: 65px;
+    height: 290px;
+    width: 270px;
+    margin-left: auto;
+    margin-right: auto
+}
+.onepay-content .onepay-content-body .onepay-content-bill-body-right-section .onepay-content-bill-body-right-section-body .onepay-content-bill-body-right-section-body-content-loading img.onepay-loading-image {
+    display: inline-block;
+    margin: auto;
+    margin-top: 25%;
+    height: 100px
+}
+.onepay-content .onepay-content-body .onepay-content-bill-body-right-section .onepay-content-bill-body-right-section-footer {
+    margin-top: 15px;
+    display: block;
+    width: 400px;
+    text-align: center
+}
+.onepay-content .onepay-content-body .onepay-content-bill-body-right-section .onepay-content-bill-body-right-section-footer .onepay-content-bill-body-right-section-footer-body {
+    margin-top: 10px
+}
+.onepay-content .onepay-content-body .onepay-content-bill-body-right-section .onepay-content-bill-body-right-section-footer .onepay-content-bill-body-right-section-footer-body a {
+    text-decoration: none
+}
+.onepay-content .onepay-content-body .onepay-content-bill-body-right-section .onepay-content-bill-body-right-section-footer .onepay-content-bill-body-right-section-footer-body a img {
+    padding: 2px;
+    height: 40px
+}
+.onepay-content .onepay-content-body .onepay-error-body-left-section {
+    margin-top: 60px;
+    margin-left: 35px;
+    display: inline-block;
+    width: 415px;
+    height: 380px;
+    text-align: left
+}
+.onepay-content .onepay-content-body .onepay-error-body-left-section .onepay-error-body-left-section-header {
+    font-size: 2.2em;
+    font-weight: 300;
+    color: #3f1b7b;
+    display: block;
+    height: 90px
+}
+.onepay-content .onepay-content-body .onepay-error-body-left-section .onepay-error-body-left-section-body {
+    line-height: 2em;
+    margin-top: 40px;
+    height: 130px;
+    display: block
+}
+.onepay-content .onepay-content-body .onepay-error-body-left-section .onepay-error-body-left-section-body ul.onepay-error-list li {
+    list-style: none inside none
+}
+.onepay-content .onepay-content-body .onepay-error-body-left-section .onepay-error-body-left-section-body ul.onepay-error-list li .bullet {
+    height: 10px;
+    width: 10px;
+    display: inline-block;
+    margin-right: 5px;
+    vertical-align: middle;
+    line-height: 100%;
+    background-color: #fcb131;
+    background: -webkit-gradient(linear, 0% 0, 0% 100%, from(#fcd675), to(#ffa818));
+    background: -webkit-linear-gradient(45deg, #ffc15e 0, #fcd675 0, #ffa818 100%);
+    background: -moz-linear-gradient(45deg, #ffc15e 0, #fcd675 0, #ffa818 100%);
+    background: -ms-linear-gradient(45deg, #ffc15e 0, #fcd675 0, #ffa818 100%);
+    background: -o-linear-gradient(45deg, #ffc15e 0, #fcd675 0, #ffa818 100%);
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px
+}
+.onepay-content .onepay-content-body .onepay-error-body-left-section .onepay-error-body-left-section-footer {
+    font-weight: 700;
+    color: #fcb131;
+    height: 120px;
+    display: block
+}
+.onepay-content .onepay-content-body .onepay-error-body-right-section {
+    margin-top: 60px;
+    display: inline-block;
+    width: 290px;
+    height: 380px
+}
+.onepay-content .onepay-content-body .onepay-error-body-right-section .onepay-error-image-wrapper {
+    display: block;
+    height: 260px;
+    text-align: center
+}
+.onepay-content .onepay-content-body .onepay-error-body-right-section .onepay-error-image-wrapper img.onepay-error-cogs {
+    margin-top: 30px;
+    height: 140px
+}
+.onepay-content .onepay-content-body .onepay-error-body-right-section .onepay-error-accept-wrapper {
+    display: block;
+    height: 120px;
+    text-align: center
+}
+.onepay-content .onepay-content-body .onepay-error-body-right-section .onepay-error-accept-wrapper .onepay-error-accept-button {
+    cursor: pointer;
+    font-size: 1.1em;
+    font-weight: 700;
+    color: #3f1b7b;
+    background-color: #fcb131;
+    display: inline-block;
+    width: 200px;
+    height: 50px;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 50px;
+    -moz-box-shadow: 1px 1px 1px #7e7e7e;
+    -webkit-box-shadow: 1px 1px 1px #7e7e7e;
+    box-shadow: 1px 1px 1px #7e7e7e;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px
+}
+</style></head>
+<body class="animsition" style="animation-duration: 1500ms; opacity: 1;">
 <!-- Header -->
 <header class="header-v4">
     <!-- Header desktop -->
@@ -53,7 +478,7 @@
                 </div>
                 <div class="right-top-bar flex-w h-full">
                     <a href="#" class="flex-c-m trans-04 p-lr-25">
-                        Ayuda & FAQs
+                        Ayuda &amp; FAQs
                     </a>
                     <a href="#" class="flex-c-m trans-04 p-lr-25">
                         Mi cuenta
@@ -71,7 +496,7 @@
             <nav class="limiter-menu-desktop container">
                 <!-- Logo desktop -->
                 <a href="#" class="logo">
-                    <img src="images/icons/logo-01.png" alt="IMG-LOGO">
+                    <img src="images/icons/logo-01.png" alt="IMG-LOGO" />
                 </a>
                 <!-- Menu desktop -->
                 <div class="menu-desktop">
@@ -120,7 +545,7 @@
     <div class="wrap-header-mobile">
         <!-- Logo moblie -->
         <div class="logo-mobile">
-            <a href="#"><img src="images/icons/logo-01.png" alt="IMG-LOGO"></a>
+            <a href="#"><img src="images/icons/logo-01.png" alt="IMG-LOGO" /></a>
         </div>
         <!-- Icon header -->
         <div class="wrap-icon-header flex-w flex-r-m m-r-15">
@@ -152,7 +577,7 @@
             <li>
                 <div class="right-top-bar flex-w h-full">
                     <a href="#" class="flex-c-m p-lr-10 trans-04">
-                        Help & FAQs
+                        Help &amp; FAQs
                     </a>
                     <a href="#" class="flex-c-m p-lr-10 trans-04">
                         My Account
@@ -199,13 +624,13 @@
     <div class="modal-search-header flex-c-m trans-04 js-hide-modal-search">
         <div class="container-search-header">
             <button class="flex-c-m btn-hide-modal-search trans-04 js-hide-modal-search">
-                <img src="images/icons/icon-close2.png" alt="CLOSE">
+                <img src="images/icons/icon-close2.png" alt="CLOSE" />
             </button>
             <form class="wrap-search-header flex-w p-l-15">
                 <button class="flex-c-m trans-04">
                     <i class="zmdi zmdi-search"></i>
                 </button>
-                <input class="plh3" type="text" name="search" placeholder="Search...">
+                <input class="plh3" type="text" name="search" placeholder="Search..." />
             </form>
         </div>
     </div>
@@ -222,11 +647,11 @@
                 <i class="zmdi zmdi-close"></i>
             </div>
         </div>
-        <div class="header-cart-content flex-w js-pscroll">
+        <div class="header-cart-content flex-w js-pscroll ps" style="position: relative; overflow: hidden;">
             <ul class="header-cart-wrapitem w-full">
                 <li class="header-cart-item flex-w flex-t m-b-12">
                     <div class="header-cart-item-img">
-                        <img src="images/item-cart-01.jpg" alt="IMG">
+                        <img src="images/item-cart-01.jpg" alt="IMG" />
                     </div>
                     <div class="header-cart-item-txt p-t-8">
                         <a href="#" class="header-cart-item-name m-b-18 hov-cl1 trans-04">
@@ -239,7 +664,7 @@
                 </li>
                 <li class="header-cart-item flex-w flex-t m-b-12">
                     <div class="header-cart-item-img">
-                        <img src="images/item-cart-02.jpg" alt="IMG">
+                        <img src="images/item-cart-02.jpg" alt="IMG" />
                     </div>
                     <div class="header-cart-item-txt p-t-8">
                         <a href="#" class="header-cart-item-name m-b-18 hov-cl1 trans-04">
@@ -252,7 +677,7 @@
                 </li>
                 <li class="header-cart-item flex-w flex-t m-b-12">
                     <div class="header-cart-item-img">
-                        <img src="images/item-cart-03.jpg" alt="IMG">
+                        <img src="images/item-cart-03.jpg" alt="IMG" />
                     </div>
                     <div class="header-cart-item-txt p-t-8">
                         <a href="#" class="header-cart-item-name m-b-18 hov-cl1 trans-04">
@@ -277,7 +702,7 @@
                     </a>
                 </div>
             </div>
-        </div>
+        <div class="ps__rail-x" style="left: 0px; bottom: 0px;"><div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div></div><div class="ps__rail-y" style="top: 0px; right: 0px;"><div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 0px;"></div></div></div>
     </div>
 </div>
 <!-- breadcrumb -->
@@ -300,7 +725,7 @@
                 <div class="m-l-25 m-r--38 m-lr-0-xl">
                     <div class="wrap-table-shopping-cart">
                         <table class="table-shopping-cart">
-                            <tr class="table_head">
+                            <tbody><tr class="table_head">
                                 <th class="column-1">Producto</th>
                                 <th class="column-2"></th>
                                 <th class="column-3">Precio</th>
@@ -308,28 +733,41 @@
                                 <th class="column-5">Total</th>
                             </tr>
 
-                            <c:set var="total" value="${0}"/>
-                            <c:forEach items="${products}" var="product">
+                            
+                            
                                 <tr class="table_row">
                                     <td class="column-1">
                                         <div class="how-itemcart1">
-                                            <img src="${product.imagePath}" alt="IMG">
+                                            <img src="images/item-cart-04.jpg" alt="IMG" />
                                         </div>
                                     </td>
-                                    <td class="column-2">${product.name}</td>
-                                    <td class="column-3"><fmt:formatNumber type="currency" pattern="$ #" value="${product.price}" /></td>
-                                    <td class="column-4"><fmt:formatNumber type="number" pattern="#" value="${product.quantity}" /></td>
-                                    <td class="column-5"><fmt:formatNumber type="currency" pattern="$ #" value="${product.price * product.quantity}" /></td>
-                                    <c:set var="total" value="${total + product.price * product.quantity}"/>
+                                    <td class="column-2">Fresh Strawberries</td>
+                                    <td class="column-3">$ 36000</td>
+                                    <td class="column-4">2</td>
+                                    <td class="column-5">$ 72000</td>
+                                    
                                 </tr>
-                            </c:forEach>
-                        </table>
+                            
+                                <tr class="table_row">
+                                    <td class="column-1">
+                                        <div class="how-itemcart1">
+                                            <img src="images/item-cart-05.jpg" alt="IMG" />
+                                        </div>
+                                    </td>
+                                    <td class="column-2">Lightweight Jacket</td>
+                                    <td class="column-3">$ 16000</td>
+                                    <td class="column-4">1</td>
+                                    <td class="column-5">$ 16000</td>
+                                    
+                                </tr>
+                            
+                        </tbody></table>
                     </div>
                 </div>
             </div>
             <div class="col-sm-10 col-lg-7 col-xl-5 m-lr-auto m-b-50">
                 <div class="bor10 p-lr-40 p-t-30 p-b-40 m-l-63 m-r-40 m-lr-0-xl p-lr-15-sm" id="qr">
-                    <div style="display: none" id="loading"><img src="./images/loading.gif"/></div>
+                    <div style="display: none" id="loading"><img src="./images/loading.gif" /></div>
                     <h4 class="mtext-109 cl2 p-b-30">
                         Total Compra
                     </h4>
@@ -341,7 +779,7 @@
                         </div>
                         <div class="size-209">
                                     <span class="mtext-110 cl2">
-                                        <fmt:formatNumber type="currency" pattern="$ #" value="${total}" />
+                                        $ 88000
                                     </span>
                         </div>
                     </div>
@@ -353,22 +791,20 @@
                         </div>
                         <div class="size-209 p-t-1">
                                     <span class="mtext-110 cl2">
-                                        <fmt:formatNumber type="currency" pattern="$ #" value="${total}" />
+                                        $ 88000
                                     </span>
                         </div>
                     </div>
                     <div class="size-209 p-t-1">
                     </div>
-                    <div id="do-direct-qr" onclick="doQrDirecto()" class="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer">
-                        <img src="images/icons/logo_onepay_white.png"> &nbsp; QR directo
+                    <div onclick="doQrDirecto()" class="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer">
+                        <img src="images/icons/logo_onepay_white.png" />   QR directo
                     </div>
-                    <br/>
+                    <br />
                     <div id="do-checkout" onclick="doCheckout()" class="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer">
-                        <img src="images/icons/logo_onepay_white.png"> &nbsp; Checkout
+                        <img src="images/icons/logo_onepay_white.png" />   Checkout
                     </div>
                 </div>
-                <br>
-                <div id="ott" style="text-align: center; font-weight: bold"></div>
             </div>
         </div>
     </div>
@@ -456,7 +892,7 @@
                 </h4>
                 <form>
                     <div class="wrap-input1 w-full p-b-4">
-                        <input class="input1 bg-none plh1 stext-107 cl7" type="text" name="email" placeholder="email@example.com">
+                        <input class="input1 bg-none plh1 stext-107 cl7" type="text" name="email" placeholder="email@example.com" />
                         <div class="focus-input1 trans-04"></div>
                     </div>
                     <div class="p-t-18">
@@ -470,24 +906,24 @@
         <div class="p-t-40">
             <div class="flex-c-m flex-w p-b-18">
                 <a href="#" class="m-all-1">
-                    <img src="images/icons/icon-pay-01.png" alt="ICON-PAY">
+                    <img src="images/icons/icon-pay-01.png" alt="ICON-PAY" />
                 </a>
                 <a href="#" class="m-all-1">
-                    <img src="images/icons/icon-pay-02.png" alt="ICON-PAY">
+                    <img src="images/icons/icon-pay-02.png" alt="ICON-PAY" />
                 </a>
                 <a href="#" class="m-all-1">
-                    <img src="images/icons/icon-pay-03.png" alt="ICON-PAY">
+                    <img src="images/icons/icon-pay-03.png" alt="ICON-PAY" />
                 </a>
                 <a href="#" class="m-all-1">
-                    <img src="images/icons/icon-pay-04.png" alt="ICON-PAY">
+                    <img src="images/icons/icon-pay-04.png" alt="ICON-PAY" />
                 </a>
                 <a href="#" class="m-all-1">
-                    <img src="images/icons/icon-pay-05.png" alt="ICON-PAY">
+                    <img src="images/icons/icon-pay-05.png" alt="ICON-PAY" />
                 </a>
             </div>
             <p class="stext-107 cl6 txt-center">
                 <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                Copyright &copy;<script>document.write(new Date().getFullYear());</script>
+                Copyright ©<script type="text/javascript" src="https://cdn.rawgit.com/TransbankDevelopers/transbank-sdk-js-onepay/v1.5.0/lib/merchant.onepay.min.js"></script><script>document.write(new Date().getFullYear());</script>2018
                 All rights reserved | This template is made with
                 <i class="fa fa-heart-o" aria-hidden="true"></i> by
                 <a href="https://colorlib.com" target="_blank">Colorlib</a>
@@ -541,7 +977,7 @@
 <script src="js/httputil.js"></script>
 <script src="js/main.js"></script>
 <div>
-    <input type="hidden" id="ewallet-pay-data" data='{"items":[{"amount":"36000","quantity":"1","description":"Fresh Strawberries"},{"amount":"16000","quantity":"1","description":"Lightweight Jacket"}]}' />
+    <input type="hidden" id="ewallet-pay-data" data="{&quot;items&quot;:[{&quot;amount&quot;:&quot;36000&quot;,&quot;quantity&quot;:&quot;1&quot;,&quot;description&quot;:&quot;Fresh Strawberries&quot;},{&quot;amount&quot;:&quot;16000&quot;,&quot;quantity&quot;:&quot;1&quot;,&quot;description&quot;:&quot;Lightweight Jacket&quot;}]}" />
 </div>
 <script>
     (function (o, n, e, p, a, y) {
@@ -549,7 +985,7 @@
         s.type = "text/javascript";
         s.src = e;
         s.onload = s.onreadystatechange = function () {
-            if (!o && (!s.readyState
+            if (!o &amp;&amp; (!s.readyState
                 || s.readyState === "loaded")) {
                 y();
             }
@@ -574,7 +1010,8 @@
         showLoadingImage();
 
         $.post('./transaction-create.html', {channel: Onepay.getChannel()}, function (data) {
-            var transaction = data;
+            // convert json to object
+            var transaction = JSON.parse(data);
 
             // si el cliente esta desde un movil redirecciono a la app y dejo de ejecutar las funciones de web.
             if (Onepay.isMobile()) {
@@ -597,8 +1034,7 @@
 
                     var params = {
                         occ: occ,
-                        externalUniqueNumber: externalUniqueNumber,
-                        status: 'PRE_AUTHORIZED'
+                        externalUniqueNumber: externalUniqueNumber
                     };
 
                     var httpUtil = new HttpUtil();
@@ -620,9 +1056,6 @@
             };
 
             Onepay.directQr(transaction, htmlTagId);
-            var ott = document.getElementById("ott");
-            ott.id = 'rendered-ott';
-            ott.innerText = transaction.ott;
         });
     }
 
@@ -636,5 +1069,33 @@
         Onepay.checkout(options);
     }
 </script>
-</body>
-</html>
+
+
+<div class="onepay-overlay fade-and-drop onepay-open" id="onepay-overlay" style="position: fixed; height: 100vh;"><div class="onepay-modal fade-and-drop onepay-open" id="onepay-modal" style="min-width: 750px; max-width: 750px;"><div class="onepay-wrapper"><div is="onepay-content" class="onepay-content" id="modal-iframe"><div id="zoid-onepay-checkout-iframe-74c32cda9a" class="zoid zoid-tag-onepay-checkout-iframe zoid-context-iframe" style=""><style>
+                    #zoid-onepay-checkout-iframe-74c32cda9a, #zoid-onepay-checkout-iframe-74c32cda9a &gt; .zoid-outlet {
+                        width: 750px;
+                        height: 520px;
+                    }
+
+                    #zoid-onepay-checkout-iframe-74c32cda9a &gt; .zoid-outlet {
+                        display: inline-block;
+                        position: relative;
+                    }
+
+                    #zoid-onepay-checkout-iframe-74c32cda9a &gt; .zoid-outlet &gt; iframe {
+                        height: 100%;
+                        width: 100%;
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        transition: opacity .2s ease-in-out;
+                    }
+
+                    #zoid-onepay-checkout-iframe-74c32cda9a &gt; .zoid-outlet &gt; iframe.zoid-visible {
+                        opacity: 1;
+                    }
+
+                    #zoid-onepay-checkout-iframe-74c32cda9a &gt; .zoid-outlet &gt; iframe.zoid-invisible {
+                        opacity: 0;
+                    }
+                </style><div class="zoid-outlet" style=""><iframe class="zoid-component-frame zoid-visible" frameborder="0" allowtransparency="true" name="xcomponent__onepay_checkout_iframe__pmrhk2leei5ceolfgyywmmrvgfrtsirmej2gczzchirg63tfobqxslldnbswg23pov2c22lgojqw2zjcfqrgg33nobxw4zloorigc4tfnz2ceot3ejzgkzrchirhi33qej6syitsmvxgizlskbqxezlooqrdu6zcojswmir2ej2g64bcpuwce4dsn5yhgir2pmrhi6lqmurduitsmf3selbcozqwy5lfei5hwitdmfwgyytbmnvseot3ejpv65dzobsv6xzchirf6x3govxgg5djn5xf6xzcpuwce33qoruw63ttei5hwitfnzsha33jnz2ceorcfyxxi4tbnzzwcy3unfxw4lldojswc5dffzuhi3lmeiwcey3pnvwwk4tdmvgg6z3pei5ce2duoryhgorpf5rwi3roojqxoz3joqxgg33nf5kheyloonrgc3tlirsxmzlmn5ygk4ttf52heyloonrgc3tlfvzwi2znnjqxmyjnn5xgk4dbpewwk6dbnvygyzjpgm3tkmtcgeztgl3tojrs63lbnfxc653fmjqxa4bpnfwwcz3fomxwsy3pnzzs63dpm5xs2mbrfzyg4zzcfqrggylmnrrgcy3lkvzgyir2eixc65dsmfxhgyldoruw63rnmnxw23ljoqxgq5dnnqrh2lbcmnwg643fjvxwiylmei5hwis7l52hs4dfl5pseorcl5pwm5lomn2gs33ol5pse7jmejtwk5cpor2ceot3ejpv65dzobsv6xzchirf6x3govxgg5djn5xf6xzcpuwce5ljmqrduirxgrrtgmtdmrqtsyjcfqrgy33hjrsxmzlmei5ce2lomzxselbcn5xek4tsn5zceot3ejpv65dzobsv6xzchirf6x3govxgg5djn5xf6xzcpv6x2lbcnfsceorcgm3dcnbqgeytkmrxeiwcezdpnvqws3rchirgq5duoa5c6l3mn5rwc3din5zxioryga4dait5__" title="onepay_checkout_iframe" scrolling="no" src="https://cdn.rawgit.com/TransbankDevelopers/transbank-sdk-js-onepay/v1.5.0/html/checkout.html?uid=74c32cda9a&amp;logLevel=info&amp;xcomponent=1" style="background-color: transparent;"></iframe></div></div></div></div></div></div></body></html>

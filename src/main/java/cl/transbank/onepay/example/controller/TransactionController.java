@@ -53,6 +53,7 @@ public class TransactionController {
         toJson.put("qrCodeAsBase64", response.getQrCodeAsBase64());
         toJson.put("issuedAt", response.getIssuedAt());
         toJson.put("amount", shoppingCart.getTotal());
+        System.out.println(new Gson().toJson(toJson));
         return new Gson().toJson(toJson);
     }
 

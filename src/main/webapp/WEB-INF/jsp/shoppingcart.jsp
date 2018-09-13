@@ -359,14 +359,16 @@
                     </div>
                     <div class="size-209 p-t-1">
                     </div>
-                    <div onclick="doQrDirecto()" class="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer">
+                    <div id="do-direct-qr" onclick="doQrDirecto()" class="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer">
                         <img src="images/icons/logo_onepay_white.png"> &nbsp; QR directo
                     </div>
                     <br/>
-                    <div onclick="doCheckout()" class="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer">
+                    <div id="do-checkout" onclick="doCheckout()" class="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer">
                         <img src="images/icons/logo_onepay_white.png"> &nbsp; Checkout
                     </div>
                 </div>
+                <br>
+                <div id="ott" style="text-align: center; font-weight: bold"></div>
             </div>
         </div>
     </div>
@@ -572,8 +574,7 @@
         showLoadingImage();
 
         $.post('./transaction-create.html', {channel: Onepay.getChannel()}, function (data) {
-            // convert json to object
-            var transaction = JSON.parse(data);
+            var transaction = data;
 
             // si el cliente esta desde un movil redirecciono a la app y dejo de ejecutar las funciones de web.
             if (Onepay.isMobile()) {
@@ -596,7 +597,8 @@
 
                     var params = {
                         occ: occ,
-                        externalUniqueNumber: externalUniqueNumber
+                        externalUniqueNumber: externalUniqueNumber,
+                        status: 'PRE_AUTHORIZED'
                     };
 
                     var httpUtil = new HttpUtil();
@@ -618,6 +620,9 @@
             };
 
             Onepay.directQr(transaction, htmlTagId);
+            var ott = document.getElementById("ott");
+            ott.id = 'rendered-ott';
+            ott.innerText = transaction.ott;
         });
     }
 

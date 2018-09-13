@@ -29,6 +29,17 @@ $ mvn jetty:run
 
 Luego visita http://localhost:8080 y verás la tienda de ejemplo. Desde tu computador podrás ver como se comporta Onepay en modalidad "WEB" desktop.
 
+## Ejecutar tests automáticos
+
+Debes tener corriendo el servidor web (según lo indicado más arriba) y luego
+ejecutar:
+
+```
+mvn test -Dselenide.headless=false
+```
+
+Nota: debes tener Google Chrome instalado en tu computador.
+
 ## Compra de prueba
 1. Desde la tienda de ejemplo.
 2. Clic en el botón `Onepay QR DIRECTO` o `Onepay QR CHECKOUT`
@@ -149,4 +160,3 @@ utun1: flags=8051<UP,POINTOPOINT,RUNNING,MULTICAST> mtu 1380
 Mi ip entonces es `172.16.0.17`
 
 Una vez que sepas tu ip, visita desde tu teléfono (que debiera estar en la misma red) http://mi.direccion.ip:8080
-

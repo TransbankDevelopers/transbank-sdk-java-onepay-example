@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/TransbankDevelopers/transbank-sdk-java-onepay-example.svg?branch=master)](https://travis-ci.org/TransbankDevelopers/transbank-sdk-java-onepay-example)
+
 # Proyecto de ejemplo Onepay para Transbank SDK Java
 
 ## Requerimientos

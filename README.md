@@ -24,7 +24,8 @@ git clone https://github.com/TransbankDevelopers/transbank-sdk-java-onepay-examp
 ## Ejecutar ejemplo
 
 ```bash
-$ mvn jetty:run
+cd transbank-sdk-java-onepay-example
+mvn jetty:run
 ```
 
 Luego visita http://localhost:8080 y verás la tienda de ejemplo. Desde tu computador podrás ver como se comporta Onepay en modalidad "WEB" desktop.

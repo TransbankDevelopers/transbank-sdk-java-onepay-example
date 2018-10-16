@@ -8,11 +8,9 @@ Para poder ejecutar el proyecto de ejemplo necesitas tener instalada las siguien
 en tu computador:
 
 1. git ([como instalar git][git_install])
-2. docker y docker-compose. ([como instalar docker][docker_install])
-3. maven ([como instalar maven][maven_install])
+2. maven ([como instalar maven][maven_install])
 
 [git_install]: https://git-scm.com/book/en/v2/Getting-Started-Installing-Git
-[docker_install]: https://docs.docker.com/install/
 [maven_install]: https://maven.apache.org/install.html
 
 ## Clonar repositorio

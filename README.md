@@ -161,3 +161,9 @@ utun1: flags=8051<UP,POINTOPOINT,RUNNING,MULTICAST> mtu 1380
 Mi ip entonces es `172.16.0.17`
 
 Una vez que sepas tu ip, visita desde tu teléfono (que debiera estar en la misma red) http://mi.direccion.ip:8080
+
+# Desarrollo
+
+## Actualizar sdk js
+
+Editar el archivo `transbank-sdk-java-onepay-example/src/main/webapp/WEB-INF/jsp/shoppingcart.jsp` y cambiar la versión de `merchant.onepay.min.js`

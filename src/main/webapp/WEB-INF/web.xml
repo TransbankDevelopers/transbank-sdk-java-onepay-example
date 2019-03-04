@@ -19,4 +19,7 @@
         <url-pattern></url-pattern>
     </servlet-mapping>
 
+    <listener>
+        <listener-class>cl.transbank.onepay.example.AppContextListener</listener-class>
+    </listener>
 </web-app>

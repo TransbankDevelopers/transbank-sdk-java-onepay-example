@@ -2,13 +2,13 @@
   {
     "imagePath": "images/item-cart-04.jpg",
     "name": "Fresh Strawberries",
-    "price": 36000,
+    "price": 1,
     "quantity": 2
   },
   {
     "imagePath": "images/item-cart-05.jpg",
     "name": "Lightweight Jacket",
-    "price": 16000,
+    "price": 1,
     "quantity": 1
   }
 ]
